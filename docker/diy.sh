@@ -15,3 +15,5 @@
 #2 * * * * node /scripts/jd_cfd_stock.js >> /scripts/logs/jd_cfd_stock.log 2>&1
 # 极速版-发财大赢家(HW)
 #2 1 * * * node /scripts/jd_speed_redEnvelope.js >> /scripts/logs/jd_speed_redEnvelope.log 2>&1
+# 农场额外任务(HW)
+2 9 * * * node /scripts/jd_fruit_moreTask.js >> /scripts/logs/jd_fruit_moreTask.log 2>&1
