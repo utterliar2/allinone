@@ -54,7 +54,7 @@ jobs:
         cp -f ./Aaron/jd_nzmh.js ./
         cp -f ./Aaron/jd_speed_redpocke.js ./
         cp -f ./Aaron/jd_daily_lottery.js ./
-        cp -f ./jd_ccSign ./
+        cp -f ./Aaron/jd_ccSign.js ./
         cp -rf ./Aaron/utils ./
         rm -rf ./Aaron
         echo "========= 开始下载JDHelloWorld的脚本 ========="
@@ -105,14 +105,15 @@ jobs:
         rename -f 's/^gua_/jd_gua/' *
         #rename -f 's/^jddj/jd_dj_/' *
         echo "========= 开始合并cron定时文件 ========="
-        wget -N https://raw.githubusercontent.com/gossh520/jd-v4/master/docker/crontab_list.sh
+        wget -N https://github.com/Annyoo2021/scripts/raw/main/docker/crontab_list.sh
         mv -f crontab_list.sh ./docker/crontab_list.sh
         cat ./docker/diy.sh >> ./docker/crontab_list.sh
         echo "========= 修改cron名称及临时屏蔽 ========="
         sed -i 's/sjzjd/guaMMdou/g' ./docker/crontab_list.sh
         sed -i 's/jxqd/jxsign/g' ./docker/crontab_list.sh
         sed -i 's/jd_joy.js/jd_joy_new.js/g' ./docker/crontab_list.sh
-        sed -i '/jd_qqxing\|jd_lsj\|jd_joy_run\|jd_joy_feedPets\|jd_joy_steal\|jd_joy_park_task\|jd_zqfl\|jd_ddnc_farmpark\|jd_Elecsport\|jd_all_bean_change\|jd_try\|jd_live_redrain\|jd_price\|jd_unsubscriLive\|jd_speed.js\|necklace/d' ./docker/crontab_list.sh
+        sed -i 's/zqfl/getUp/g' ./docker/crontab_list.sh
+        sed -i '/jd_qqxing\|jd_lsj\|jd_joy_run\|jd_joy_feedPets\|jd_joy_steal\|jd_joy_park_task\|jd_ddnc_farmpark\|jd_Elecsport\|jd_all_bean_change\|jd_try\|jd_live_redrain\|jd_price\|jd_unsubscriLive\|jd_speed.js\|necklace/d' ./docker/crontab_list.sh
         echo "========= 备份cron及yml文件 ========="
         log_time=$(date "+%Y-%m-%d-%H-%M-%S")
         diff ./docker/crontab_list.sh ./backup/cron/crontab_list.sh | tee ./backup/cron/env.diff
