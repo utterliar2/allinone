@@ -104,7 +104,6 @@
 # 天天提鹅
 30 2-23/3 * * * node /scripts/jd_daily_egg.js >> /scripts/logs/jd_daily_egg.log 2>&1
 # 金融养猪
-12 */6 * * * node /scripts/jd_pigPet.js >> /scripts/logs/jd_pigPet.log 2>&1
 # 京喜工厂
 20 * * * * node /scripts/jd_dreamFactory.js >> /scripts/logs/jd_dreamFactory.log 2>&1
 # 东东小窝
@@ -178,7 +177,6 @@
 # 京东金融养猪猪（ak）
 12 0-23/6 * * * node /scripts/jd_task_pigPet.js >> /scripts/logs/jd_task_pigPet.log 2>&1
 # 京喜财富岛提现（小小）
-#59 11,12,23 * * * node /scripts/jd_cfdtx.js >> /scripts/logs/jd_cfdtx.log 2>&1
 # 伊利养牛（HW）
 0 12 * * * node /scripts/jd_yili_cow.js >> /scripts/logs/jd_yili_cow.log 2>&1
 # 京喜牧场兑换新品通知(HW)
@@ -187,3 +185,5 @@
 #2 * * * * node /scripts/jd_cfd_stock.js >> /scripts/logs/jd_cfd_stock.log 2>&1
 # 极速版-发财大赢家(HW)
 #2 1 * * * node /scripts/jd_speed_redEnvelope.js >> /scripts/logs/jd_speed_redEnvelope.log 2>&1
+# 农场额外任务(HW)
+2 9 * * * node /scripts/jd_fruit_moreTask.js >> /scripts/logs/jd_fruit_moreTask.log 2>&1
