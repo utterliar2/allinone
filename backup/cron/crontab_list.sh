@@ -22,7 +22,7 @@
 # 星系牧场 #wen
 
 # 特物Z|万物皆可国创 活动时间：###
-3 13,22 * * * node /scripts/jd_superBrand.js >> /scripts/logs/jd_superBrand.log 2>&1
+3 13,22 * * * node /scripts/jd_productZ4Brand.js >> /scripts/logs/jd_productZ4Brand.log 2>&1
 
 # 女装盲盒 活动时间：2021-05-24到2021-06-22
 35 1,22 * * * node /scripts/jd_nzmh.js >> /scripts/logs/jd_nzmh.log 2>&1
