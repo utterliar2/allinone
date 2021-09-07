@@ -20,6 +20,11 @@ jobs:
         shopt -s extglob
         rm -rf !(docker|backup|icon|account.json|Loon|QuantumultX|README.md|jd_half_redrain.js|jd_super_redrain.js)
         shopt -u extglob
+        echo "========= 开始下载小小的脚本及依赖 ========="
+        git clone -b jd_scripts https://github.com/Aaron-lv/sync.git ./Aaron
+        cp -f ./Aaron/jd_*.js ./
+        cp -rf ./Aaron/utils ./
+        rm -rf ./Aaron
         echo "========= 开始下载smiek2221的脚本 ========="
         git clone https://github.com/smiek2221/scripts.git ./smiek2221
         rm -r ./smiek2221/USER_AGENTS.js
@@ -42,25 +47,7 @@ jobs:
         cp -r ./airacg/function ./
         cp -f ./airacg/*_*.js ./
         rm -rf ./airacg
-        echo "========= 开始下载小小的脚本及依赖 ========="
-        git clone -b jd_scripts https://github.com/Aaron-lv/sync.git ./Aaron
-        cp -f ./Aaron/jd_joy_reward.js ./
-        cp -f ./Aaron/jd_blueCoin.js ./
-        cp -f ./Aaron/jd_cash.js ./
-        #cp -f ./Aaron/jd_cfdtx.js ./
-        #cp -f ./Aaron/jd_jump.js ./
-        #cp -f ./Aaron/jd_bookshop.js ./
-        cp -f ./Aaron/jd_jxlhb.js ./
-        cp -f ./Aaron/jd_wish.js ./
-        #cp -f ./Aaron/jd_nzmh.js ./
-        cp -f ./Aaron/jd_speed_redpocke.js ./
-        cp -f ./Aaron/jd_daily_lottery.js ./
-        cp -f ./Aaron/jd_ccSign.js ./
-        cp -f ./Aaron/jd_sendBeans.js ./
-        #cp -f ./Aaron/jx_sign.js ./
-        cp -rf ./Aaron/utils ./
-        rm -rf ./Aaron
-        echo "========= 开始下载JDHelloWorld的脚本 ========="
+                echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
         echo "========= 开始复制依赖 ========="
