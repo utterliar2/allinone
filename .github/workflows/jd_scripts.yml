@@ -82,7 +82,7 @@ jobs:
         rename -f 's/^jx_/jd_jx/' *
         rename -f 's/^gua_/jd_gua/' *
         rename -f 's/^star_/jd_star/' *
-        rename -f 's/^jddj/jd_dj_/' *
+        rename -f 's/^jddj/jd_dj/' *
         echo "========= 开始合并cron定时文件 ========="
         wget -N https://github.com/Annyoo2021/scripts/raw/main/docker/crontab_list.sh
         mv -f crontab_list.sh ./docker/crontab_list.sh
