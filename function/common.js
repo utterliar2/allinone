@@ -7,14 +7,16 @@ let notify = require('./sendNotify');
 let mainEval = require("./eval");
 let assert = require('assert');
 let jxAlgo = require("./jxAlgo");
-let config = {}
+let config = require("./config");
+let user = {}
 try {
-    config = require("./config");
+    user = require("./user")
 } catch (e) {}
 class env {
     constructor(name) {
         this.config = { ...config,
-            ...process.env
+            ...process.env,
+            ...user,
         };
         this.name = name;
         this.message = [];

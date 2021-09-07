@@ -28,6 +28,19 @@ async function farm(cookie: string) {
   return data.farmUserPro?.shareCode ?? 'null'
 }
 
+async function health(cookie: string) {
+  let {data} = await axios.get(`https://api.m.jd.com/client.action/client.action?functionId=jdhealth_getTaskDetail&body=${escape(JSON.stringify({"buildingId": "", taskId: 6, "channelId": 1}))}&client=wh5&clientVersion=1.0.0`, {
+    headers: {
+      "Cookie": cookie,
+      "origin": "https://h5.m.jd.com",
+      "referer": "https://h5.m.jd.com/",
+      'Content-Type': 'application/x-www-form-urlencoded',
+      "User-Agent": USER_AGENT
+    }
+  })
+  return data.data?.result?.taskVos[0].assistTaskDetailVo.taskToken ?? 'null'
+}
+
 async function pet(cookie: string) {
   let {data} = await axios.post(`https://api.m.jd.com/client.action?functionId=initPetTown`,
     `body=${escape(JSON.stringify({version: 2, channel: "app"}))}&appid=wh5&loginWQBiz=pet-town&clientVersion=9.0.4`, {
@@ -108,30 +121,13 @@ async function cash(cookie: string) {
   return data.data?.result?.inviteCode ?? 'null'
 }
 
-async function carnivalcity(cookie: string) {
-  let {data} = await axios.post('https://api.m.jd.com/api',
-    `appid=guardian-starjd&functionId=carnivalcity_jd_prod&body=${escape(JSON.stringify({apiMapping: "/khc/index/supportList"}))}&t=${Date.now()}&loginType=2`, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Origin": "https://carnivalcity.m.jd.com",
-        "Referer": "https://carnivalcity.m.jd.com/",
-        "Cookie": cookie,
-        "User-Agent": USER_AGENT,
-      }
-    })
-  if (data.data?.supportedNums && data.data?.supportNeedNums)
-    return `${data.data.supportedNums} / ${data.data.supportNeedNums}`
-  else
-    return 'null / null'
-}
-
 export {
   bean,
   farm,
+  health,
   pet,
   factory,
   sgmh,
   jxfactory,
   cash,
-  carnivalcity
 }
