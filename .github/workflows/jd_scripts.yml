@@ -40,7 +40,7 @@ jobs:
         rm -rf ./curtinlv
         echo "========= 开始下载start的脚本 ========="
         git clone https://github.com/star261/jd.git ./star
-        cp -f ./star/*.js ./
+        cp -rf ./star/*.js ./
         rm -rf ./star
         echo "========= 开始下载airacg的脚本及依赖 ========="
         git clone https://github.com/airacg/jd_task.git ./airacg
