@@ -13,6 +13,9 @@
 # 京喜领88元红包(9.30结束)
 0 0,12,21 * * * node /scripts/jd_jxlhb.js >> /scripts/logs/jd_jxlhb.log 2>&1
 
+# 内容鉴赏官 (9.30 结束，10月继续开启)
+11 1,5 * * * node /scripts/jd_connoisseur.js >> /scripts/logs/jd_connoisseur.log 2>&1
+
 # 送豆得豆
 6 1,14 * * * node /scripts/jd_sendBeans.js >> /scripts/logs/jd_sendBeans.log 2>&1
 
