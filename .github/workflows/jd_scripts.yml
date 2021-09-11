@@ -50,6 +50,8 @@ jobs:
         echo "========= 开始下载JDHelloWorld的脚本 ========="
         git clone https://github.com/JDHelloWorld/jd_scripts.git ./JDHelloWorld
         mv ./JDHelloWorld/githubAction.md ./githubAction.md
+        rm -f ./JDHelloWorld/jd_cfd_hb.ts
+        rm -f ./JDHelloWorld/jx_sign.ts
         echo "========= 开始复制依赖 ========="
         cp -f ./JDHelloWorld/package.json ./
         cp -f ./JDHelloWorld/sendNotify.js ./
