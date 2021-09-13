@@ -57,8 +57,8 @@ jobs:
         cp -f ./JDHelloWorld/*ShareCodes.js ./
         echo "========= 开始转换JDHelloWorld的ts脚本 ========="
         cd ./JDHelloWorld
-        npm i
-        npm i -g typescript ts-node
+        sudo npm install
+        mv jd_cfd_hb.ts ./backup/ts/
         tsc *_*.ts
         cd ./utils
         tsc *.ts
