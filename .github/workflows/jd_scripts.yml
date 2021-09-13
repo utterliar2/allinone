@@ -55,10 +55,10 @@ jobs:
         cp -f ./JDHelloWorld/sendNotify.js ./
         cp -f ./JDHelloWorld/jdCookie.js ./
         cp -f ./JDHelloWorld/*ShareCodes.js ./
+        mv ./JDHelloWorld/jd_cfd_hb.ts ./backup/ts/
         echo "========= 开始转换JDHelloWorld的ts脚本 ========="
         cd ./JDHelloWorld
         sudo npm install
-        mv jd_cfd_hb.ts ./backup/ts/
         tsc *_*.ts
         cd ./utils
         tsc *.ts
