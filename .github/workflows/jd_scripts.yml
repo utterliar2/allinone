@@ -20,6 +20,8 @@ jobs:
         shopt -s extglob
         rm -rf !(docker|backup|icon|account.json|Loon|QuantumultX|README.md|jd_half_redrain.js|jd_super_redrain.js)
         shopt -u extglob
+        git clone https://github.com/utterliar1/jd_scripts.git ./1
+        cp -rf ./1/icon ./icon
         echo "========= 开始下载小小的脚本及依赖 ========="
         git clone https://github.com/Annyoo2021/scripts.git ./Annyoo2021
         cp -f ./Annyoo2021/jd_*.js ./
