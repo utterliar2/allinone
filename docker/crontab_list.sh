@@ -5,35 +5,50 @@
 
 ##############短期活动##############
 
-# 京东手机狂欢城 (10.1 结束)
-6 0-18/6 1,16-30 9-10 * node /scripts/jd_carnivalcity.js >> /scripts/logs/jd_carnivalcity.log 2>&1
+# 潮玩儿制躁团 (11.14 结束)
+7 9 * 10-11 * node /scripts/jd_zzt.js >> /scripts/logs/jd_zzt.log 2>&1
+
+# 京东超级盒子 (11.11 结束)
+13 3,13 * 10-11 * node /scripts/jd_cjhz.js >> /scripts/logs/jd_cjhz.log 2>&1
+
+# 发财挖宝help助力 (11.30 结束)
+6 1,3,7,11,16,20 * 10-11 * node /scripts/jd_fcwb.js >> /scripts/logs/jd_fcwb.log 2>&1
+
+# 发财大赢家之翻翻乐 (没看什么时候结束)
+20,40 * * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
+
+# 电竞预言家 (11.6 结束)
+13 1,11 * * * node /scripts/jd_lol.js >> /scripts/logs/jd_lol.log 2>&1
+
+# 京东手机狂欢城 (11.13 结束)
+6 0-18/6 * 10-11 * node /scripts/jd_carnivalcity.js >> /scripts/logs/jd_carnivalcity.log 2>&1
+
+# 环游记
+13 0,6-23/2 * 10-11 * node /scripts/jd_hyj.js >> /scripts/logs/jd_hyj.log 2>&1
+
+# 预售福利机
+2 0,2 * 10-11 * node /scripts/jd_ys.js >> /scripts/logs/jd_ys.log 2>&1
+
+# 惊喜大作战
+6 1,13 * 10-11 * node /scripts/jd_jxdzz.js >> /scripts/logs/jd_jxdzz.log 2>&1
+
+# 东东超市抢京豆
+2 0,9 * 10-11 * node /scripts/jd_fission.js >> /scripts/logs/jd_fission.log 2>&1
 
 # 集魔方 (京东APP - 新品 - 集魔方)
-16 5,13 * * * node /scripts/jd_mofang.js >> /scripts/logs/jd_mofang.log 2>&1
+25 0,13 * * * node /scripts/jd_mofang.js >> /scripts/logs/jd_mofang.log 2>&1
+
+# 魔方兑换 (只兑换5魔方)
+9 1,15 * * * node /scripts/jd_mf_exchange.js >> /scripts/logs/jd_mf_exchange.log 2>&1
 
 # 京东小魔方 (9.29 24.00 结束)
-13 1,10 * * * node /scripts/jd_mf.js >> /scripts/logs/jd_mf.log 2>&1
+13 0,10 * * * node /scripts/jd_mf.js >> /scripts/logs/jd_mf.log 2>&1
 
-# 跳跳乐瓜分京豆(9.13-9.19)
-11 1,12,22 * 9 * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
+# 芥么赚豪礼
+22 1,13 * * * node /scripts/jd_genz.js >> /scripts/logs/jd_genz.log 2>&1
 
-# 蚊子腿豆子 (9.21-10.16 10月16号应该可以参与瓜分)
-3 6,18 1-16,21-30 9,10 * node /scripts/jd_decompression.js >> /scripts/logs/jd_decompression.log 2>&1
-
-# 东东玩家(9.17-10.11)
-9 0 * 9-10 * node /scripts/jd_ddwj.js >> /scripts/logs/jd_ddwj.log 2>&1
-
-# 企有此礼(9.30 结束)
-28 0 10-30 9 * node /scripts/jd_qycl.js >> /scripts/logs/jd_qycl.log 2>&1
-
-# 心相印店铺活动  古蜀寻宝 (10.6 结束)
-17 8,16 1-30 9-10 * node /scripts/jd_xinxiangyin.js >> /scripts/logs/jd_xinxiangyin.log 2>&1
-
-# 京小鸽吾悦寄 (9.30 结束)
-9 1,13 1-30 9 * node /scripts/jd_jxg.js >> /scripts/logs/jd_jxg.log 2>&1
-
-# 发财大赢家之翻翻乐 (9.30结束)
-20,40 * * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
+# 芥末小程序签到领现金 (12.31结束)
+16 9 * * * node /scripts/jd_zsign.js >> /scripts/logs/jd_zsign.log 2>&1
 
 # 京喜领88元红包(9.30结束)
 0 0,12,21 * * * node /scripts/jd_jxlhb.js >> /scripts/logs/jd_jxlhb.log 2>&1
@@ -52,8 +67,8 @@
 
 # 星系牧场 #wen
 
-# 特物Z|万物皆可国创 活动时间：###
-3 13,22 * * * node /scripts/jd_productZ4Brand.js >> /scripts/logs/jd_productZ4Brand.log 2>&1
+# 特物Z 活动时间：###
+3 13,22 * * * node /scripts/jd_superBrand.js >> /scripts/logs/jd_superBrand.log 2>&1
 
 # 女装盲盒 活动时间：2021-05-24到2021-06-22
 35 1,22 * * * node /scripts/jd_nzmh.js >> /scripts/logs/jd_nzmh.log 2>&1
@@ -72,13 +87,19 @@
 
 # 京东零食街 活动时间：年底
 
+# 京东金融-天天拼图
+11 0,15 * * * node /scripts/jd_ttpt.js >> /scripts/logs/jd_ttpt.log 2>&1
+
 ##############长期活动##############
+
 # 签到
 5 0,9 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
 # 领券中心签到
 17 0 * * * node /scripts/jd_ccSign.js >> /scripts/logs/jd_ccSign.log 2>&1
 # 东东世界
 17 1,15 * * * node /scripts/jd_ddworld.js >> /scripts/logs/jd_ddworld.log 2>&1
+# 东东世界兑换
+3 0,17 * * * node /scripts/jd_ddworld_exchange.js >> /scripts/logs/jd_ddworld_exchange.log 2>&1
 # 京喜购物返红包助力
 11 */6 * * * node /scripts/jx_aid_cashback.js >> /scripts/logs/jx_aid_cashback.log 2>&1
 # 宠汪汪跑验证码
@@ -89,12 +110,12 @@
 13 6,18 * * * node /scripts/jd_dwapp.js >> /scripts/logs/jd_dwapp.log 2>&1
 # 取关主播
 # 升级赚京豆
-9 9 * * * node /scripts/jd_guaMMdou.js >> /scripts/logs/jd_guaMMdou.log 2>&1
+9 9 * * * node /scripts/jd_sjzjd.js >> /scripts/logs/jd_sjzjd.log 2>&1
 # 点点券
 # 京喜签到
-6 1,9 * * * node /scripts/jd_jxsign.js >> /scripts/logs/jd_jxsign.log 2>&1
+6 1,9 * * * node /scripts/jd_jxqd.js >> /scripts/logs/jd_jxqd.log 2>&1
 # 早起福利
-30 6 * * * node /scripts/jd_getUp.js >> /scripts/logs/jd_getUp.log 2>&1
+30 6 * * * node /scripts/jd_zqfl.js >> /scripts/logs/jd_zqfl.log 2>&1
 # 店铺签到
 45 0,23 * * * node /scripts/jd_shop_sign.js >> /scripts/logs/jd_shop_sign.log 2>&1
 # 汪汪乐园养joy

@@ -1,7 +1,6 @@
 "use strict";
 /**
  * 任务、宝箱
- * TODO 助力
  */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -39,12 +38,29 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 exports.__esModule = true;
 var axios_1 = require("axios");
+var path = require("path");
 var TS_USER_AGENTS_1 = require("./TS_USER_AGENTS");
-var cookie = '', res = '', USER_AGENT = "jdpingou", notify = require('./sendNotify'), UserName, index;
+var cookie = '', res = '', UserName, index;
+var shareCodeSelf = [], shareCode = [], shareCodeHW = [
+    'aae98a3e3b04d3ac430ee9ee91f4759d',
+    'bdf489af86e5021575040fffee407bc2',
+    '92a46b6081a955fb4dcea1e56e590b3a',
+    '638d77021a1dd4d74cad72d44afd9899',
+    'f4dc33716d2551e372fd44f5ac0baca8'
+];
 !(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var cookiesArr, i, _a, isLogin, nickName, _i, _b, t, _c, _d, t;
+    var cookiesArr, except, i, i, _i, shareCode_1, code, i, rili, _a, _b, t, _c, _d, t, e_1;
     return __generator(this, function (_e) {
         switch (_e.label) {
             case 0: return [4 /*yield*/, (0, TS_USER_AGENTS_1.requestAlgo)()];
@@ -53,33 +69,86 @@ var cookie = '', res = '', USER_AGENT = "jdpingou", notify = require('./sendNoti
                 return [4 /*yield*/, (0, TS_USER_AGENTS_1.requireConfig)()];
             case 2:
                 cookiesArr = _e.sent();
+                except = (0, TS_USER_AGENTS_1.exceptCookie)(path.basename(__filename));
                 i = 0;
                 _e.label = 3;
             case 3:
-                if (!(i < cookiesArr.length)) return [3 /*break*/, 17];
+                if (!(i < cookiesArr.length)) return [3 /*break*/, 7];
                 cookie = cookiesArr[i];
                 UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)[1]);
                 index = i + 1;
-                return [4 /*yield*/, (0, TS_USER_AGENTS_1.TotalBean)(cookie)];
+                console.log("\n\u5F00\u59CB\u3010\u4EAC\u4E1C\u8D26\u53F7" + index + "\u3011" + UserName + "\n");
+                return [4 /*yield*/, api('query', 'signhb_source,smp,type', {})];
             case 4:
-                _a = _e.sent(), isLogin = _a.isLogin, nickName = _a.nickName;
-                if (!isLogin) {
-                    notify.sendNotify(__filename.split('/').pop(), "cookie\u5DF2\u5931\u6548\n\u4EAC\u4E1C\u8D26\u53F7" + index + "\uFF1A" + (nickName || UserName));
-                    return [3 /*break*/, 16];
-                }
-                console.log("\n\u5F00\u59CB\u3010\u4EAC\u4E1C\u8D26\u53F7" + index + "\u3011" + (nickName || UserName) + "\n");
-                return [4 /*yield*/, api('query', 'signhb_source,smp,type', { signhb_source: 5, smp: '', type: 1 })];
-            case 5:
                 res = _e.sent();
-                _i = 0, _b = res.commontask;
+                console.log('助力码:', res.smp);
+                return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(1000)];
+            case 5:
+                _e.sent();
+                shareCodeSelf.push(res.smp);
                 _e.label = 6;
             case 6:
-                if (!(_i < _b.length)) return [3 /*break*/, 10];
-                t = _b[_i];
-                if (!(t.status === 1)) return [3 /*break*/, 9];
-                console.log(t.taskname);
-                return [4 /*yield*/, api("https://m.jingxi.com/fanxiantask/signhb/dotask?task=" + t.task + "&signhb_source=5&_=" + Date.now() + "&sceneval=2&g_login_type=1&callback=jsonpCBKB&g_ty=ls", '')];
+                i++;
+                return [3 /*break*/, 3];
             case 7:
+                shareCode = Array.from(new Set(__spreadArray(__spreadArray([], shareCodeSelf, true), shareCodeHW, true)));
+                console.log('内部助力:', shareCodeSelf);
+                i = 0;
+                _e.label = 8;
+            case 8:
+                if (!(i < cookiesArr.length)) return [3 /*break*/, 14];
+                cookie = cookiesArr[i];
+                UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)[1]);
+                _i = 0, shareCode_1 = shareCode;
+                _e.label = 9;
+            case 9:
+                if (!(_i < shareCode_1.length)) return [3 /*break*/, 13];
+                code = shareCode_1[_i];
+                console.log(UserName + " \u53BB\u52A9\u529B " + code);
+                return [4 /*yield*/, api('query', 'signhb_source,smp,type', { signhb_source: 5, smp: code, type: 1 })];
+            case 10:
+                res = _e.sent();
+                console.log('助力', JSON.stringify(res));
+                return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(2000)];
+            case 11:
+                _e.sent();
+                _e.label = 12;
+            case 12:
+                _i++;
+                return [3 /*break*/, 9];
+            case 13:
+                i++;
+                return [3 /*break*/, 8];
+            case 14:
+                i = 0;
+                _e.label = 15;
+            case 15:
+                if (!(i < cookiesArr.length)) return [3 /*break*/, 36];
+                cookie = cookiesArr[i];
+                UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)[1]);
+                index = i + 1;
+                console.log("\n\u5F00\u59CB\u3010\u4EAC\u4E1C\u8D26\u53F7" + index + "\u3011" + UserName + "\n");
+                if (except.includes(encodeURIComponent(UserName))) {
+                    console.log('已设置跳过');
+                    return [3 /*break*/, 35];
+                }
+                _e.label = 16;
+            case 16:
+                _e.trys.push([16, 32, , 33]);
+                return [4 /*yield*/, api('query', 'signhb_source,smp,type', { signhb_source: 5, smp: '', type: 1 })];
+            case 17:
+                res = _e.sent();
+                rili = res.riliremind_task.status;
+                console.log(res.riliremind_task.getmoney);
+                _a = 0, _b = res.commontask;
+                _e.label = 18;
+            case 18:
+                if (!(_a < _b.length)) return [3 /*break*/, 22];
+                t = _b[_a];
+                if (!(t.status === 1)) return [3 /*break*/, 21];
+                console.log(t.taskname);
+                return [4 /*yield*/, api("https://m.jingxi.com/fanxiantask/signhb/dotask?task=" + t.task + "&signhb_source=5&_=" + Date.now() + "&sceneval=2", '')];
+            case 19:
                 res = _e.sent();
                 if (res.ret === 0) {
                     console.log('任务完成，获得：', res.sendhb);
@@ -87,38 +156,69 @@ var cookie = '', res = '', USER_AGENT = "jdpingou", notify = require('./sendNoti
                 else {
                     console.log('任务失败：', res.errmsg);
                 }
-                return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(2000)];
-            case 8:
+                return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(3000)];
+            case 20:
                 _e.sent();
-                _e.label = 9;
-            case 9:
-                _i++;
-                return [3 /*break*/, 6];
-            case 10: return [4 /*yield*/, api('query', 'signhb_source,smp,type', { signhb_source: 5, smp: '', type: 1 })];
-            case 11:
+                _e.label = 21;
+            case 21:
+                _a++;
+                return [3 /*break*/, 18];
+            case 22:
+                if (!(rili === 1)) return [3 /*break*/, 24];
+                return [4 /*yield*/, api("https://m.jingxi.com/fanxiantask/signhb/dotask?task=rili_remind&signhb_source=5&ispp=0&sqactive=&tk=&_stk=ispp%2Csignhb_source%2Csqactive%2Ctask%2Ctk&_ste=1&_=" + Date.now() + "&sceneval=2", 'ispp,signhb_source,sqactive,task,tk')];
+            case 23:
                 res = _e.sent();
-                if (!(res.baoxiang_left != 0)) return [3 /*break*/, 16];
+                if (res.ret === 0) {
+                    console.log('日历任务完成');
+                }
+                else {
+                    console.log('日历任务失败', res);
+                }
+                _e.label = 24;
+            case 24: return [4 /*yield*/, api('query', 'signhb_source,smp,type', { signhb_source: 5, smp: '', type: 1 })];
+            case 25:
+                res = _e.sent();
+                if (!(res.baoxiang_left != 0)) return [3 /*break*/, 30];
+                console.log(res.baoxiang_stage);
                 _c = 0, _d = res.baoxiang_stage;
-                _e.label = 12;
-            case 12:
-                if (!(_c < _d.length)) return [3 /*break*/, 16];
+                _e.label = 26;
+            case 26:
+                if (!(_c < _d.length)) return [3 /*break*/, 30];
                 t = _d[_c];
-                if (!(t.status === 1)) return [3 /*break*/, 15];
+                if (!(t.status === 1)) return [3 /*break*/, 29];
                 return [4 /*yield*/, api("https://m.jingxi.com/fanxiantask/signhb/bxdraw?_=" + Date.now() + "&sceneval=2", '')];
-            case 13:
+            case 27:
                 res = _e.sent();
                 console.log('开宝箱，获得：', res.sendhb);
-                return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(2000)];
-            case 14:
+                return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(3000)];
+            case 28:
                 _e.sent();
-                _e.label = 15;
-            case 15:
+                _e.label = 29;
+            case 29:
                 _c++;
-                return [3 /*break*/, 12];
-            case 16:
+                return [3 /*break*/, 26];
+            case 30: return [4 /*yield*/, doubleSign()];
+            case 31:
+                res = _e.sent();
+                if (res.retCode === 0) {
+                    console.log('双签成功');
+                }
+                else {
+                    console.log('双签失败', res);
+                }
+                return [3 /*break*/, 33];
+            case 32:
+                e_1 = _e.sent();
+                console.log(e_1);
+                return [3 /*break*/, 33];
+            case 33: return [4 /*yield*/, (0, TS_USER_AGENTS_1.wait)(3000)];
+            case 34:
+                _e.sent();
+                _e.label = 35;
+            case 35:
                 i++;
-                return [3 /*break*/, 3];
-            case 17: return [2 /*return*/];
+                return [3 /*break*/, 15];
+            case 36: return [2 /*return*/];
         }
     });
 }); })();
@@ -126,31 +226,30 @@ function api(fn, stk, params) {
     var _this = this;
     if (params === void 0) { params = {}; }
     return new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
-        var url, data, e_1;
+        var url, data, e_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    url = "https://m.jingxi.com/fanxiantask/signhb/" + fn + "?_stk=" + encodeURIComponent(stk) + "&_ste=1&_=" + Date.now() + "&sceneval=2&g_login_type=1&callback=jsonpCBKB&g_ty=ls";
-                    url = (0, TS_USER_AGENTS_1.h5st)(url, stk, params, 10038);
+                    url = "https://m.jingxi.com/fanxiantask/signhb/" + fn + "?_stk=" + encodeURIComponent(stk) + "&_ste=1&_=" + Date.now() + "&sceneval=2";
                     if (fn.match(/(dotask|bxdraw)/)) {
                         url = fn;
                     }
+                    url = (0, TS_USER_AGENTS_1.h5st)(url, stk, params, 10038);
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, axios_1["default"].get(url, {
                             headers: {
                                 'Host': 'm.jingxi.com',
-                                'User-Agent': USER_AGENT,
+                                'User-Agent': "jdpingou;iPhone;5.9.0;12.4.1;" + (0, TS_USER_AGENTS_1.randomString)(40) + ";network/wifi;",
                                 'Referer': 'https://st.jingxi.com/',
-                                'X-Requested-With': 'com.jd.pingou',
                                 'Cookie': cookie
                             }
                         })];
                 case 2:
                     data = (_a.sent()).data;
                     if (typeof data === 'string') {
-                        data = data.replace('try{jsonpCBKB(', '').replace('try{Query(', '').replace('try{BxDraw(', '').split('\n')[0];
+                        data = data.replace('try{jsonpCBKB(', '').replace('try{Query(', '').replace('try{BxDraw(', '').replace('try{Dotask(', '').split('\n')[0];
                         resolve(JSON.parse(data));
                     }
                     else {
@@ -158,11 +257,40 @@ function api(fn, stk, params) {
                     }
                     return [3 /*break*/, 4];
                 case 3:
-                    e_1 = _a.sent();
-                    reject(401);
+                    e_2 = _a.sent();
+                    reject(e_2);
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
         });
     }); });
+}
+function doubleSign() {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, e_3;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, axios_1["default"].get('https://m.jingxi.com/double_sign/IssueReward?sceneval=2', {
+                            headers: {
+                                'Host': 'm.jingxi.com',
+                                'Origin': 'https://st.jingxi.com',
+                                'Accept': 'application/json',
+                                'User-Agent': 'jdpingou;',
+                                'Referer': 'https://st.jingxi.com/pingou/jxapp_double_signin/index.html',
+                                'Cookie': cookie
+                            }
+                        })];
+                case 1:
+                    data = (_a.sent()).data;
+                    return [2 /*return*/, data];
+                case 2:
+                    e_3 = _a.sent();
+                    console.log(e_3);
+                    return [2 /*return*/, ''];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
 }

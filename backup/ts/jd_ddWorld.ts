@@ -43,8 +43,7 @@ let tokenKey: string = '', token: string = '', bearer: string = '';
             inviter_id: res.openid
           })
           try {
-            // await axios.get('https://api.jdsharecode.xyz/api/autoInsert/ddworld?sharecode=' + encodeURIComponent(t.assistTaskDetailVo.taskToken + ',' + res.openid))
-            await axios.get('http://127.0.0.1:10001/api/autoInsert/ddworld?sharecode=' + encodeURIComponent(t.assistTaskDetailVo.taskToken + ',' + res.openid))
+            await axios.get(`http://127.0.0.1:10001/api/autoInsert/ddworld?sharecode=` + encodeURIComponent(t.assistTaskDetailVo.taskToken + ',' + res.openid))
           } catch (e) {
           }
         }
@@ -54,28 +53,12 @@ let tokenKey: string = '', token: string = '', bearer: string = '';
   console.log('内部助力码：', shareCodesInternal)
 
   for (let i = 0; i < cookiesArr.length; i++) {
-    try {
-      let {data} = await axios.get('https://api.jdsharecode.xyz/api/ddworld/30', {timeout: 10000})
-      console.log('获取到30个随机助力码:', data.data)
-      let others = []
-      for (let code of data.data) {
-        others.push({
-          taskToken: code.split(',')[0],
-          inviter_id: code.split(',')[1]
-        })
-      }
-      shareCodes = [...shareCodesInternal, ...others]
-    } catch (e) {
-      console.log('获取助力池失败')
-    }
     cookie = cookiesArr[i];
     UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)![1])
-    for (let share of shareCodes) {
-      console.log(`${UserName}去助力${share.taskToken}`)
-      res = await api('do_assist_task', `taskToken=${share.taskToken}&inviter_id=${share.inviter_id}`)
-      await wait(2000)
-      console.log('助力结果：', res)
-    }
+    console.log(`${UserName}去助力${shareCodesInternal[0].taskToken}`)
+    res = await api('do_assist_task', `taskToken=${shareCodesInternal[0].taskToken}&inviter_id=${shareCodesInternal[0].inviter_id}`)
+    await wait(2000)
+    console.log('助力结果：', res)
   }
 })()
 
@@ -101,7 +84,7 @@ async function api(fn: string, body: string = '') {
 }
 
 async function getIsvToken() {
-  let {data} = await axios.post(`https://api.m.jd.com/client.action?functionId=genToken`,
+  let {data}: any = await axios.post(`https://api.m.jd.com/client.action?functionId=genToken`,
     `body=%7B%22to%22%3A%22https%3A%2F%2Fddsj-dz.isvjcloud.com%2Fdd-world%2Fload_app%2Fload_app.html%22%2C%22action%22%3A%22to%22%7D&uuid=4ccb375c539fd92bade&client=apple&clientVersion=10.0.10&st=1631884082694&sv=111&sign=1a49fd69e7d3c18cad91cc00ed40d327`, {
       headers: {
         'Host': 'api.m.jd.com',
@@ -118,7 +101,7 @@ async function getIsvToken() {
 }
 
 async function getIsvToken2() {
-  let {data} = await axios.post("https://api.m.jd.com/client.action?functionId=isvObfuscator",
+  let {data}: any = await axios.post("https://api.m.jd.com/client.action?functionId=isvObfuscator",
     `body=%7B%22id%22%3A%22%22%2C%22url%22%3A%22https%3A%2F%2Fddsj-dz.isvjcloud.com%22%7D&uuid=5162ca82aed35fc52e8&client=apple&clientVersion=10.0.10&st=1631884203742&sv=112&sign=fd40dc1c65d20881d92afe96c4aec3d0`, {
       headers: {
         'Host': 'api.m.jd.com',
@@ -135,7 +118,7 @@ async function getIsvToken2() {
 }
 
 async function getToken() {
-  let {data} = await axios.post('https://ddsj-dz.isvjcloud.com/dd-api/jd-user-info',
+  let {data}: any = await axios.post('https://ddsj-dz.isvjcloud.com/dd-api/jd-user-info',
     `token=${token}&source=01`, {
       headers: {
         'Host': 'ddsj-dz.isvjcloud.com',

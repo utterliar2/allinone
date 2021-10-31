@@ -36,11 +36,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.h5st = exports.getJxToken = exports.decrypt = exports.requestAlgo = exports.getRandomNumberByRange = exports.wait = exports.requireConfig = exports.getFarmShareCode = exports.getBeanShareCode = exports.TotalBean = void 0;
+exports.getshareCodeHW = exports.randomNumString = exports.o2s = exports.resetHosts = exports.randomString = exports.exceptCookie = exports.h5st = exports.getJxToken = exports.decrypt = exports.requestAlgo = exports.getRandomNumberByRange = exports.wait = exports.requireConfig = exports.getFarmShareCode = exports.getBeanShareCode = exports.TotalBean = void 0;
 var axios_1 = require("axios");
+var ts_md5_1 = require("ts-md5");
 var date_fns_1 = require("date-fns");
 var dotenv = require("dotenv");
-var ts_md5_1 = require("ts-md5");
+var fs_1 = require("fs");
 var CryptoJS = require('crypto-js');
 dotenv.config();
 var fingerprint, token = '', enCryptMethodJD;
@@ -290,4 +291,66 @@ function getJxToken(cookie) {
     };
 }
 exports.getJxToken = getJxToken;
+function exceptCookie(filename) {
+    if (filename === void 0) { filename = 'x.ts'; }
+    var except;
+    try {
+        (0, fs_1.accessSync)('./utils/exceptCookie.json');
+        except = JSON.parse((0, fs_1.readFileSync)('./utils/exceptCookie.json').toString() || '{}')[filename] || [];
+    }
+    catch (e) {
+        except = [];
+    }
+    console.log('except:', except);
+    return except;
+}
+exports.exceptCookie = exceptCookie;
+function randomString(e, word) {
+    e = e || 32;
+    var t = word === 26 ? "012345678abcdefghijklmnopqrstuvwxyz" : "0123456789abcdef", a = t.length, n = "";
+    for (var i = 0; i < e; i++)
+        n += t.charAt(Math.floor(Math.random() * a));
+    return n;
+}
+exports.randomString = randomString;
+function resetHosts() {
+    try {
+        (0, fs_1.writeFileSync)('/etc/hosts', '');
+    }
+    catch (e) {
+    }
+}
+exports.resetHosts = resetHosts;
+function o2s(arr) {
+    console.log(JSON.stringify(arr));
+}
+exports.o2s = o2s;
+function randomNumString(e) {
+    e = e || 32;
+    var t = '0123456789', a = t.length, n = "";
+    for (var i = 0; i < e; i++)
+        n += t.charAt(Math.floor(Math.random() * a));
+    return n;
+}
+exports.randomNumString = randomNumString;
+function getshareCodeHW(key) {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, e_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, axios_1["default"].get('https://api.jdsharecode.xyz/api/HW_CODES')];
+                case 1:
+                    data = (_a.sent()).data;
+                    return [2 /*return*/, data[key] || []];
+                case 2:
+                    e_1 = _a.sent();
+                    return [2 /*return*/, []];
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
+}
+exports.getshareCodeHW = getshareCodeHW;
 exports["default"] = USER_AGENT;

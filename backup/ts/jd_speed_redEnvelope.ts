@@ -1,118 +1,108 @@
 /**
  * 极速版-发财大赢家
- *
- * 要先手动开红包
- *
- * 只有内部互助
- *
- * 其他功能下次
+ * cron : 1 0,8,18 * * *
  */
 
-import axios from 'axios'
-import USER_AGENT, {TotalBean} from './TS_USER_AGENTS'
-import * as dotenv from 'dotenv'
+import axios from 'axios';
+import {requireConfig, requestAlgo, wait} from './TS_USER_AGENTS';
 
-const notify = require('./sendNotify')
-dotenv.config()
 
-let UserName: string, index: number, cookie: string = '', cookiesArr: string[] = [], res: any = '';
-let shareCodes: userInfo[] = []
-
-// let HELP_HW: string = process.env.HELP_HW ? process.env.HELP_HW : "true";
-// console.log('帮助HelloWorld:', HELP_HW)
-// let HELP_POOL: string = process.env.HELP_POOL ? process.env.HELP_POOL : "true";
-// console.log('帮助助力池:', HELP_POOL)
-
-interface userInfo {
-  redEnvelopeId: string,
-  markedPin: string
-}
-
+let cookie: string, res: any, UserName: string, index: number;
+let shareCodesSelf: { redEnvelopeId: string, inviter: string }[] = [], shareCodes: { redEnvelopeId: string, inviter: string }[] = [], shareCodesHW: any, id: string = 'PFbUR7wtwUcQ860Sn8WRfw';
 !(async () => {
-  await requireConfig();
+  await requestAlgo('c8bce')
+  let cookiesArr: any = await requireConfig();
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)![1])
     index = i + 1;
-    let {isLogin, nickName}: any = await TotalBean(cookie)
-    if (!isLogin) {
-      notify.sendNotify(__filename.split('/').pop(), `cookie已失效\n京东账号${index}：${nickName || UserName}`)
-      continue
-    }
-    console.log(`\n开始【京东账号${index}】${nickName || UserName}\n`);
+    console.log(`\n开始【京东账号${index}】${UserName}\n`);
 
-    await makeShareCodes();
+    res = await api('openRedEnvelopeInteract', '', '');
+    if (res.code === 0) {
+      console.log('当前进度:', res.data.amount * 1, ' 还需要:', res.data.needAmount * 1 ?? (10 - res.data.needAmount * 1).toFixed(2))
+      await wait(1000)
+    } else {
+      console.log('需要先手动打开红包。火爆？')
+    }
+
+    res = await api('redEnvelopeInteractHome', '', '')
+    if (res.data) {
+      console.log('助力码:', res.data.redEnvelopeId, res.data.inviter)
+      shareCodesSelf.push({
+        redEnvelopeId: res.data.redEnvelopeId,
+        inviter: res.data.markedPin
+      })
+    }
     await wait(2000)
   }
 
-  console.log(shareCodes)
-
+  console.log('内部助力码:', shareCodesSelf)
   for (let i = 0; i < cookiesArr.length; i++) {
-    cookie = cookiesArr[i]
-    for (let share of shareCodes) {
-      await help(share.redEnvelopeId, share.markedPin)
-      await wait(2000)
+    cookie = cookiesArr[i];
+    UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)![1])
+    await getCodesHW();
+    if (i === 0)
+      shareCodes = [...shareCodesHW, ...shareCodesSelf]
+    else
+      shareCodes = [...shareCodesSelf, ...shareCodesHW]
+
+    for (let boss of shareCodes) {
+      if (boss.redEnvelopeId && boss.inviter) {
+        console.log(`账号${i + 1} ${UserName} 去助力 `, boss.redEnvelopeId)
+        boss.inviter
+          ? res = await api('openRedEnvelopeInteract', boss.redEnvelopeId, boss.inviter, 2)
+          : res = await api('openRedEnvelopeInteract', boss.redEnvelopeId, boss.inviter, 1)
+        console.log(JSON.stringify(res))
+        if (res.code === 16020) {
+          await wait(3000)
+          break
+        }
+        res = res.data.helpResult
+        if (res.code === 16013) {
+          console.log('上限')
+          break
+        } else if (res.code === 16012) {
+          console.log('已助力过')
+        } else if (res.code === 0) {
+          console.log('成功', res.data.amount)
+        } else if (res.code === 16004) {
+          console.log('不助力自己')
+        } else {
+          console.log('其他错误', res.errMsg)
+        }
+        await wait(3000)
+      }
     }
   }
 })()
 
-function makeShareCodes() {
-  return new Promise<void>(async resolve => {
-    let {data} = await axios.get(`https://api.m.jd.com/?functionId=redEnvelopeInteractHome&body={%22linkId%22:%22yMVR-_QKRd2Mq27xguJG-w%22,%22redEnvelopeId%22:%22%22,%22inviter%22:%22%22,%22helpType%22:%22%22}&t=${Date.now()}&appid=activities_platform&clientVersion=3.5.8`, {
+async function api(fn: string, redEnvelopeId: string, inviter: string, helpType: number = 2) {
+  let linkId: string = 'PFbUR7wtwUcQ860Sn8WRfw'
+  try {
+    let {data} = await axios.get(`https://api.m.jd.com/?functionId=openRedEnvelopeInteract&body={%22linkId%22:%22${linkId}%22,%22redEnvelopeId%22:%22${redEnvelopeId}%22,%22inviter%22:%22${inviter}%22,%22helpType%22:%22${helpType}%22}&t=${Date.now()}&appid=activities_platform&clientVersion=3.5.0`, {
       headers: {
-        'host': 'api.m.jd.com',
-        'Origin': 'https://618redpacket.jd.com',
-        'Cookie': cookie,
-        'User-Agent': USER_AGENT,
-        'Referer': 'https://618redpacket.jd.com/',
+        'Host': 'api.m.jd.com',
+        'accept': 'application/json, text/plain, */*',
+        'origin': 'https://618redpacket.jd.com',
+        'user-agent': 'jdltapp;iPhone;3.5.0;14.2;network/wifi;hasUPPay/0;pushNoticeIsOpen/0;lang/zh_CN;model/iPhone10,2;hasOCPay/0;appBuild/1066;supportBestPay/0;pv/7.0;apprpd/;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1',
+        'accept-language': 'zh-cn',
+        'referer': `https://618redpacket.jd.com/?activityId=${linkId}&redEnvelopeId=${redEnvelopeId}&inviterId=${inviter}&helpType=1&lng=&lat=&sid=`,
+        'Cookie': cookie
       }
     })
-    let userInfo: userInfo = {
-      redEnvelopeId: data.data.redEnvelopeId,
-      markedPin: data.data.markedPin
-    }
-    console.log(userInfo)
-    shareCodes.push(userInfo)
-    resolve()
-  })
+    return data;
+  } catch (e) {
+    return {code: -1}
+  }
 }
 
-function help(redEnvelopeId: string, inviter: string) {
-  return new Promise<void>(async resolve => {
-    let {data} = await axios.get(`https://api.m.jd.com/?functionId=redEnvelopeInteractHome&body={%22linkId%22:%22yMVR-_QKRd2Mq27xguJG-w%22,%22redEnvelopeId%22:%22${redEnvelopeId}%22,%22inviter%22:%22${inviter}%22,%22helpType%22:%221%22}&t=${Date.now()}&appid=activities_platform&clientVersion=3.5.8`, {
-      headers: {
-        'host': 'api.m.jd.com',
-        'Origin': 'https://618redpacket.jd.com',
-        'Cookie': cookie,
-        'User-Agent': USER_AGENT,
-        'Referer': 'https://618redpacket.jd.com/',
-      }
-    })
-
-    console.log(data)
-
-    resolve()
-  })
-}
-
-function requireConfig() {
-  return new Promise<void>(resolve => {
-    console.log('开始获取配置文件\n')
-    const jdCookieNode = require('./jdCookie.js');
-    Object.keys(jdCookieNode).forEach((item) => {
-      if (jdCookieNode[item]) {
-        cookiesArr.push(jdCookieNode[item])
-      }
-    })
-    console.log(`共${cookiesArr.length}个京东账号\n`)
-    resolve()
-  })
-}
-
-function wait(t: number) {
-  return new Promise<void>(resolve => {
-    setTimeout(() => {
-      resolve()
-    }, t)
-  })
+async function getCodesHW() {
+  try {
+    let {data}: any = await axios.get(`https://api.jdsharecode.xyz/api/HW_CODES`, {timeout: 10000})
+    console.log('获取HW_CODES成功(api)')
+    shareCodesHW = data['fcdyj'] || []
+  } catch (e: any) {
+    console.log('获取HW_CODES失败(api)')
+  }
 }
