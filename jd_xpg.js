@@ -10,7 +10,7 @@
 ============Quantumultx===============
 [task_local]
 #10.20~11.13 选品官
-27 4,14 1-13,22-31 10,11 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_selectionOfficer.js, tag=10.20~11.13 选品官, enabled=true
+21 2,11 1-13 11 * jd_xpg.js, tag=10.20~11.13 选品官, enabled=true
 
 */
 

@@ -5,7 +5,7 @@ boxjs：https://raw.githubusercontent.com/Ariszy/Private-Script/master/Ariszy.bo
 
 [task_local]
 #惊喜大作战
-50 1 * * * https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/zy_jxdzz.js, tag= 惊喜大作战
+50 1 * * * jd_jxdzz.js, tag= 惊喜大作战
 ================Loon==============
 [Script]
 cron "50 1 * * *" script-path= https://raw.githubusercontent.com/Ariszy/Private-Script/master/JD/zy_jxdzz.js,tag= 惊喜大作战

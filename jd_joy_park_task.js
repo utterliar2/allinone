@@ -6,7 +6,7 @@
 ============Quantumultx===============
 [task_local]
 #汪汪乐园每日任务
-20 7,9,17,20 * * * jd_joypark_task.js, tag=汪汪乐园每日任务, img-url=https://raw.githubusercontent.com/tsukasa007/icon/master/jd_joypark_task.png, enabled=true
+20 7,9,17,20 * * * jd_joy_park_task.js, tag=汪汪乐园每日任务, img-url=https://raw.githubusercontent.com/tsukasa007/icon/master/jd_joypark_task.png, enabled=true
 
 ================Loon==============
 [Script]

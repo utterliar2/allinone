@@ -1,6 +1,6 @@
 /*
 * 路径：京东APP-》美食馆-》右侧瓜分京豆
-* cron 18 7,20 * * *
+18 7,20 * * * jd_lsj.js 
 * */
 const $ = new Env('零食街');
 const notify = $.isNode() ? require('./sendNotify') : '';

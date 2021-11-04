@@ -1,7 +1,7 @@
 /**
 芥么赚豪礼
 入口：微信-芥么小程序-赚豪礼
-cron 37 0,11 * * * jd_genz.js
+37 0,11 * * * jd_genz.js
 TG频道:https://t.me/sheeplost
 */
 const $ = new Env("芥么赚豪礼");

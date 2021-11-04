@@ -3,7 +3,7 @@
  Author：zxx
  Date：2021-11-2
 先内部助力，有剩余助力作者
- cron 1 0,9,19,23 * * * zx_nnfls.js
+1 0,9,19,23 * * * jd_nnfls.js
  一天要跑2次
  */
 const $ = new Env('牛牛福利');
