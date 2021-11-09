@@ -1,6 +1,6 @@
 /**
  星推官
-2 0,7,15 * * * jd_1111xtg.js
+22 3,4 * * * jd_1111xtg.js
  * */
 const $ = new Env('星推官');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
