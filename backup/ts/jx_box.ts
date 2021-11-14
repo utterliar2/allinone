@@ -3,7 +3,6 @@
  * 做任务、开宝箱
  * 每号可收20次助力，出1次助力
  * cron: 5 0,6,12 * * *
- * TODO CK 20+
  * CK1默认优先助力HW.ts，其余助力CK1
  * HW_Priority: boolean
  * true  HW.ts -> 内部
@@ -11,8 +10,7 @@
  */
 
 import axios from 'axios'
-import * as path from "path"
-import {requireConfig, wait, requestAlgo, h5st, exceptCookie, randomString} from './TS_USER_AGENTS'
+import {requireConfig, wait, requestAlgo, h5st, randomString, o2s} from './TS_USER_AGENTS'
 
 let cookie: string = '', res: any = '', UserName: string, index: number
 let shareCodeSelf: string[] = [], shareCode: string[] = [], shareCodeHW: string[] = ['aae98a3e3b04d3ac430ee9ee91f4759d', 'bdf489af86e5021575040fffee407bc2', '92a46b6081a955fb4dcea1e56e590b3a', '638d77021a1dd4d74cad72d44afd9899', 'f4dc33716d2551e372fd44f5ac0baca8']
@@ -24,7 +22,7 @@ process.env.HW_Priority === 'false' ? HW_Priority = false : ''
   let cookiesArr: any = await requireConfig()
   cookie = cookiesArr[0]
   UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)![1])
-  console.log(`\n开始【京东账号${index}】${UserName}\n`)
+  console.log(`\n开始【京东账号1 ${UserName}\n`)
 
   res = await api('query', 'signhb_source,smp,type', {})
   console.log('助力码:', res.smp)
@@ -32,10 +30,11 @@ process.env.HW_Priority === 'false' ? HW_Priority = false : ''
 
   console.log('内部助力:', shareCodeSelf)
   for (let i = 0; i < cookiesArr.length; i++) {
+    let HW_Random = shareCodeHW[Math.floor(Math.random() * shareCodeHW.length)]
     if (i === 0 && HW_Priority) {
-      shareCode = Array.from(new Set([...shareCodeHW, ...shareCodeSelf]))
+      shareCode = Array.from(new Set([HW_Random, ...shareCodeSelf]))
     } else {
-      shareCode = Array.from(new Set([...shareCodeSelf, ...shareCodeHW]))
+      shareCode = Array.from(new Set([...shareCodeSelf, HW_Random]))
     }
     cookie = cookiesArr[i]
     UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)![1])
@@ -48,21 +47,25 @@ process.env.HW_Priority === 'false' ? HW_Priority = false : ''
     }
   }
 
-  let except: string[] = exceptCookie(path.basename(__filename))
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i]
     UserName = decodeURIComponent(cookie.match(/pt_pin=([^;]*)/)![1])
     index = i + 1
     console.log(`\n开始【京东账号${index}】${UserName}\n`)
 
-    if (except.includes(encodeURIComponent(UserName))) {
-      console.log('已设置跳过')
-      continue
-    }
-
     try {
+      res = await api('query', 'ispp,signhb_source,smp,tk,type', {signhb_source: 5, smp: '', ispp: 0, tk: '', type: 1})
+      try {
+        console.log(res.invitesign)
+        console.log(parseFloat(res.invitesign.getmoney))
+      } catch (e) {
+        console.log(res)
+      }
+      await wait(2000)
+
       res = await api('query', 'signhb_source,smp,type', {signhb_source: 5, smp: '', type: 1})
       /*
+      // 日历
       let rili: number = res.riliremind_task.status
         "riliremind_task":
         {
@@ -82,8 +85,6 @@ process.env.HW_Priority === 'false' ? HW_Priority = false : ''
             "url": ""
         }
       console.log(res.riliremind_task.getmoney)
-
-      // 日历
       if (rili === 1) {
         res = await api(`https://m.jingxi.com/fanxiantask/signhb/dotask?task=rili_remind&signhb_source=5&ispp=0&sqactive=&tk=&_stk=ispp%2Csignhb_source%2Csqactive%2Ctask%2Ctk&_ste=1&_=${Date.now()}&sceneval=2`, 'ispp,signhb_source,sqactive,task,tk')
         if (res.ret === 0) {
@@ -134,6 +135,8 @@ interface Params {
   signhb_source?: number,
   type?: number,
   smp?: string,
+  ispp?: number,
+  tk?: string
 }
 
 function api(fn: string, stk: string, params: Params = {}) {
