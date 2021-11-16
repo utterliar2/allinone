@@ -61,10 +61,16 @@ if ($.isNode()) {
                         for (let i in $.taskList){
                             // console.log($.taskList[i])
                             if($.taskList[i].taskId!==null){
-                                await saveTaskRecord(cookie,$.taskList[i].taskId,$.taskList[i].taskType)
-                                await $.wait(10000)
-                                await saveTaskRecord1(cookie,$.taskList[i].taskId,$.taskList[i].taskType,$.sendBody.uid,$.sendBody.tt)
-                            }
+                                await saveTaskRecord(cookie,$.taskList[i].taskId,$.taskList[i].businessId,$.taskList[i].taskType)
+                                if($.sendBody){
+                                    await $.wait(10000)
+                                    await saveTaskRecord1(cookie,$.taskList[i].taskId,$.taskList[i].businessId,$.taskList[i].taskType,$.sendBody.uid,$.sendBody.tt)
+                                }
+                                else{
+                                    continue;
+                                }
+                                break;
+                           }
                         }
                     }
                     
@@ -84,7 +90,7 @@ if ($.isNode()) {
         $.done();
     })
 
-function saveTaskRecord(ck,taskId,taskType) {
+function saveTaskRecord(ck,taskId,businessId,taskType) {
     let opt = {
         url: `https://ifanli.m.jd.com/rebateapi/task/saveTaskRecord`,
         headers: {
@@ -102,7 +108,7 @@ function saveTaskRecord(ck,taskId,taskType) {
             "Cookie": ck,
             "Content-Type": "application/json;charset=UTF-8"
         },
-        body : JSON.stringify({ taskId: taskId, taskType: taskType }),
+        body : JSON.stringify({ taskId: taskId,businessId:businessId, taskType: taskType }),
        
     }
     return new Promise(resolve => {
@@ -114,7 +120,14 @@ function saveTaskRecord(ck,taskId,taskType) {
                     // console.log(data)
                     if (data) {
                         data = JSON.parse(data);
-                        $.sendBody = data.content
+                        // console.log(data,"获取id")
+                        if(data.content){
+                            $.sendBody = data.content
+                        }
+                        else{
+                            console.log("未获取到活动内容，开始下一个")
+                        }
+                        
                      
                     } else {
                         $.log("京东返回了空数据")
@@ -130,7 +143,7 @@ function saveTaskRecord(ck,taskId,taskType) {
     })
 }
 
-function saveTaskRecord1(ck,taskId,taskType,uid,tt) {
+function saveTaskRecord1(ck,taskId,businessId,taskType,uid,tt) {
     let opt = {
         url: `https://ifanli.m.jd.com/rebateapi/task/saveTaskRecord`,
         headers: {
@@ -148,7 +161,7 @@ function saveTaskRecord1(ck,taskId,taskType,uid,tt) {
             "Cookie": ck,
             "Content-Type": "application/json;charset=UTF-8"
         },
-        body : JSON.stringify({ taskId: taskId, taskType: taskType,uid:uid,tt:tt }),
+        body : JSON.stringify({ taskId: taskId, taskType: taskType,businessId:businessId,uid:uid,tt:tt }),
        
     }
     return new Promise(resolve => {
@@ -160,6 +173,7 @@ function saveTaskRecord1(ck,taskId,taskType,uid,tt) {
                     // console.log(data)
                     if (data) {
                         data = JSON.parse(data);
+                        // console.log("结果",data)
                         console.log("浏览结果",data.content.msg)
                     } else {
                         $.log("京东返回了空数据")
@@ -202,6 +216,7 @@ function getTaskFinishCount(ck) {
                 } else {
                     if (data){
                         data = JSON.parse(data)
+                        // console.log(data)
                         console.log("已完成次数："+data.content.finishCount+"  总任务次数："+data.content.maxTaskCount)
                         $.count=data.content
                     }
@@ -243,7 +258,13 @@ function getTaskList(ck) {
                     if (data){
                         data = JSON.parse(data)
                         // console.log(data,"活动列表")
-                        $.taskList=data.content
+                        if(data.content){
+                            $.taskList=data.content
+                        }
+                        else{
+                            console.log("未获取到活动列表，请检查活动")
+                        }
+                       
                     }
                 }
             } catch (e) {
